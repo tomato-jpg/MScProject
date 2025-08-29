@@ -1,0 +1,31 @@
+//This Arduino code uses the AccelStepper library to move a stepper motor back and forth continuously. 
+//The motor is set up in driver mode, with pin 2 as the step signal and pin 3 as the direction signal. 
+//In the loop, it first rotates the motor counter-clockwise by 2000 steps, then clockwise by 2000 steps, printing messages to the Serial Monitor as it switches direction. 
+//The setMaxSpeed and setAcceleration functions define how fast the motor can move and how quickly it can change speed
+//while short delays are added between direction changes to make the motion smoother.
+
+
+#include <AccelStepper.h>
+
+AccelStepper stepper(1, 2, 3); // 1 = Driver mode, 3 = STEP, 4 = DIR
+
+
+void setup() {
+  stepper.setMaxSpeed(10000); //10 000 for fast speed, 1000 for slow speed
+  stepper.setAcceleration(10000);
+  Serial.begin(115200);
+
+}
+
+void loop() {
+  Serial.println("CCW");
+  stepper.moveTo(-2000);
+  stepper.runToPosition();
+  delay(500);
+  Serial.println("CW");
+  stepper.moveTo(2000);
+  stepper.runToPosition();
+  Serial.println("switching");
+  delay(500);
+
+}
