@@ -1,0 +1,20 @@
+//In setup(), the motor is given a maximum speed and acceleration of 10,000, and serial communication is started for monitoring.
+//The motor will then be commanded to move to position x steps and it will stop as
+//the loop() function is empty, meaning the motor will only make this single move when powered on, with no repeated or continuous motion.
+
+#include <AccelStepper.h>
+AccelStepper stepper(1, 2, 3); // 1 = Driver mode, 3 = STEP, 4 = DIR
+
+// 400 is 1 revolution of BSA, settings on motor driver
+
+void setup() {
+  stepper.setMaxSpeed(10000);
+  stepper.setAcceleration(10000);
+  Serial.begin(115200);
+  
+  stepper.moveTo(-2000); //+ve is CW and -ve is CCW, 4000 = 50mm 2000=25mm, 1000=12.5mm on BSA
+  stepper.runToPosition();
+}
+
+void loop() {
+}
