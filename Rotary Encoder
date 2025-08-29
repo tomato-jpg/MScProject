@@ -1,0 +1,60 @@
+// This code is for 2 rotary encoders, 1 for the leader syringe and the other for the follower syringe
+  //Both encoders have to be connected to 1 arduino
+
+
+#include <RotaryEncoder.h>
+
+// ===== Encoder Pins =====
+#define ENCODER1_A 8  // Green wire (Phase A) 1st encoder
+#define ENCODER1_B 9  // White wire (Phase B) 1st encoder
+#define ENCODER2_A 10 // Second encoder (Green)
+#define ENCODER2_B 11 // Second encoder (White)
+
+// ===== Configuration =====
+#define ROTARYSTEPS 0.3
+#define WHEEL_RADIUS_MM 50.0
+#define PRINT_INTERVAL 100  // Print every X ms
+unsigned long previousMillis = 0;
+
+RotaryEncoder encoder1(ENCODER1_A, ENCODER1_B, RotaryEncoder::LatchMode::TWO03);
+RotaryEncoder encoder2(ENCODER2_A, ENCODER2_B, RotaryEncoder::LatchMode::TWO03);
+
+
+void setup() {
+  Serial.begin(115200);  
+  
+}
+
+
+
+void loop() {
+  // Update encoders at maximum speed
+  encoder1.tick();
+  encoder2.tick();
+
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= PRINT_INTERVAL) {
+    previousMillis = currentMillis;
+
+
+    noInterrupts();
+    int pos1 = encoder1.getPosition() * ROTARYSTEPS;  //reading angle position
+    int pos2 = encoder2.getPosition() * ROTARYSTEPS;
+    interrupts();
+
+    float angle1 = pos1;
+    float angle2 = -pos2;
+    float dist1 = angle1 * (PI / -180.0) * WHEEL_RADIUS_MM;  //calculating distance in mm from angle moved
+    float dist2 = angle2 * (PI / 180.0) * WHEEL_RADIUS_MM;
+    
+    Serial.print(angle1, 1);
+    Serial.print(",");
+    Serial.print(dist1, 2);
+    Serial.print(",");
+    Serial.print(angle2, 1);
+    Serial.print(",");
+    Serial.println(dist2, 2);
+  }
+}
+
+
