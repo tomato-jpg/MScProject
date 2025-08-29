@@ -1,5 +1,5 @@
 // This code is for 2 rotary encoders, 1 for the leader syringe and the other for the follower syringe
-  //Both encoders have to be connected to 1 arduino
+//Both encoders have to be connected to 1 arduino
 
 
 #include <RotaryEncoder.h>
